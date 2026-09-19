@@ -6,277 +6,115 @@
     <title>Para mi noviecita hermosa 💕</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: #2c163a;
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            color: #fff;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 100vh; color: #fff;
         }
-
         .card {
-            background: #3c1e52;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            max-width: 380px;
-            width: 90%;
-            border: 2px solid #7b2cbf;
+            background: #3c1e52; padding: 25px;
+            border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            max-width: 380px; width: 90%; border: 2px solid #7b2cbf;
             text-align: center;
         }
-
-        h1 {
-            color: #e0aaff;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        p {
-            color: #c77dff;
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        .step-container {
-            display: none;
-        }
-
-        .step-container.active {
-            display: block;
-        }
-
+        h1 { color: #e0aaff; font-size: 20px; margin-bottom: 5px; }
+        p { color: #c77dff; font-size: 13px; margin-bottom: 20px; }
+        .step-container { display: none; }
+        .step-container.active { display: block; }
         .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; margin-bottom: 20px;
         }
-
         .opt-btn {
-            background: #5a189a;
-            border: 2px solid #9d4edd;
-            color: white;
-            padding: 12px 8px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: bold;
+            background: #5a189a; border: 2px solid #9d4edd;
+            color: white; padding: 12px 8px; border-radius: 12px;
+            cursor: pointer; font-size: 13px; font-weight: bold;
         }
-
         .opt-btn.active-choice {
-            background: #7b2cbf;
-            border-color: #ff70a6;
+            background: #7b2cbf; border-color: #ff70a6;
             box-shadow: 0 0 10px rgba(255, 112, 166, 0.5);
         }
-
         .color-picker-box {
-            margin: 15px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
+            margin: 15px 0; display: flex;
+            flex-direction: column; align-items: center; gap: 8px;
         }
-
         input[type="color"] {
-            width: 60px;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: none;
+            width: 60px; height: 40px; border: none;
+            border-radius: 8px; cursor: pointer; background: none;
         }
-
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-        }
-
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 15px; }
         .btn {
-            background: #9d4edd;
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 13px;
+            background: #9d4edd; color: white; border: none;
+            padding: 10px 18px; border-radius: 20px;
+            cursor: pointer; font-weight: bold; font-size: 13px;
         }
-
-        .btn-back {
-            background: #52307c;
-        }
+        .btn-back { background: #52307c; }
 
         /* PANTALLA FINAL DEL PASTEL */
-        #final-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
+        #final-screen, #piñata-screen { display: none; flex-direction: column; align-items: center; }
         .cake-display {
-            position: relative;
-            width: 200px;
-            height: 160px;
-            margin: 25px auto 10px auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
+            position: relative; width: 200px; height: 160px;
+            margin: 25px auto 10px auto; display: flex;
+            justify-content: center; align-items: flex-end;
         }
-
         .cake-body {
-            width: 170px;
-            height: 100px;
-            border-radius: 12px 12px 0 0;
-            position: relative;
-            box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
+            width: 170px; height: 100px; border-radius: 12px 12px 0 0;
+            position: relative; box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
         }
-
-        .cake-frosting {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 30px;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .candles-box {
-            position: absolute;
-            top: -45px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .candle {
-            width: 10px;
-            height: 40px;
-            border-radius: 3px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .candle.bengala {
-            background: repeating-linear-gradient(45deg, #fff, #fff 4px, #333 4px, #333 8px) !important;
-            border: 1px solid #ffd166;
-        }
-
+        .cake-frosting { position: absolute; top: 0; width: 100%; height: 30px; border-radius: 12px 12px 0 0; }
+        .candles-box { position: absolute; top: -45px; width: 100%; display: flex; justify-content: center; gap: 12px; }
+        .candle { width: 10px; height: 40px; border-radius: 3px; position: relative; cursor: pointer; }
+        .candle.bengala { background: repeating-linear-gradient(45deg, #fff, #fff 4px, #333 4px, #333 8px) !important; border: 1px solid #ffd166; }
         .flame {
-            width: 12px;
-            height: 16px;
-            background: #ffd166;
-            border-radius: 50% 50% 20% 20%;
-            position: absolute;
-            top: -15px;
-            left: -1px;
+            width: 12px; height: 16px; background: #ffd166;
+            border-radius: 50% 50% 20% 20%; position: absolute; top: -15px; left: -1px;
             box-shadow: 0 0 8px #ffd166;
         }
-
-        .flame.bengala-flame {
-            background: #00ffff;
-            box-shadow: 0 0 12px #00ffff, 0 0 20px #fff;
-            width: 14px;
-            height: 18px;
-            top: -18px;
-            left: -2px;
-        }
-
-        .flame.off {
-            transform: scale(0);
-            opacity: 0;
-        }
-
+        .flame.bengala-flame { background: #00ffff; box-shadow: 0 0 12px #00ffff, 0 0 20px #fff; width: 14px; height: 18px; top: -18px; left: -2px; }
+        .flame.off { transform: scale(0); opacity: 0; }
         .toppings-box {
-            position: absolute;
-            top: 25px;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            font-size: 22px;
-            padding: 0 10px;
+            position: absolute; top: 5px; width: 100%;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; font-size: 18px; padding: 0 10px;
+        }
+
+        /* PIÑATA */
+        .piñata-box {
+            font-size: 80px; cursor: pointer; margin: 30px 0;
+            transition: transform 0.2s;
+            animation: shake 1.5s infinite;
+        }
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
         }
 
         /* MODAL DE CARTA */
         #modal-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 100;
         }
-
         .envelope-white {
-            background: #ffffff;
-            width: 280px;
-            height: 180px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: #ffffff; width: 280px; height: 180px; border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-
-        .red-heart {
-            font-size: 50px;
-        }
-
+        .red-heart { font-size: 50px; }
         .letter {
-            display: none;
-            background: #fffdf0;
-            color: #333;
-            padding: 25px;
-            border-radius: 12px;
-            max-width: 330px;
-            width: 85%;
-            text-align: left;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-            max-height: 85vh;
-            overflow-y: auto;
+            display: none; background: #fffdf0; color: #333; padding: 25px;
+            border-radius: 12px; max-width: 330px; width: 85%; text-align: left;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto;
         }
-
-        .letter img {
-            width: 100%;
-            max-height: 160px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .letter h2 {
-            color: #7b2cbf;
-            margin-top: 0;
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .letter p {
-            color: #495057;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .firma {
-            text-align: right;
-            font-weight: bold;
-            color: #7b2cbf;
-            margin-top: 15px;
-        }
+        .letter img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        .letter h2 { color: #7b2cbf; margin-top: 0; font-size: 18px; text-align: center; }
+        .letter p { color: #495057; font-size: 13px; line-height: 1.5; }
+        .firma { text-align: right; font-weight: bold; color: #7b2cbf; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -382,7 +220,7 @@
         </div>
     </div>
 
-    <!-- PANTALLA FINAL -->
+    <!-- PANTALLA FINAL DEL PASTEL -->
     <div class="card" id="final-screen">
         <h1>¡Toca cada velita para apagarla! 🎂✨</h1>
         <p id="instruccion-velas">Faltan velas por apagar</p>
@@ -393,17 +231,28 @@
                 <div class="toppings-box" id="finalToppingsBox"></div>
             </div>
         </div>
+        <button class="btn" id="comerBtn" style="display:none; margin-top: 15px;" onclick="comerPastel()">😋 ¡Comer Pastel!</button>
     </div>
 
-    <!-- MODAL -->
+    <!-- PANTALLA DE PIÑATA -->
+    <div class="card" id="piñata-screen">
+        <h1>¡Rompe la Piñata! 🪅</h1>
+        <p>¡Toca la piñata varias veces hasta romperla!</p>
+        <div class="piñata-box" id="piñataEmoji" onclick="golpearPiñata()">🪅</div>
+        <p id="piñataContador">Golpes: 0 / 5</p>
+    </div>
+
+    <!-- MODAL DE CARTA -->
     <div id="modal-container">
         <div class="envelope-white" id="envelope" onclick="abrirCarta()">
             <div class="red-heart">❤️</div>
             <p style="color:#555; font-weight:bold; margin-top:10px;">Ábreme</p>
         </div>
         <div class="letter" id="letterContent">
-            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Foto">
+            <!-- AQUÍ PUEDES CAMBIAR TU FOTO REEMPLAZANDO EL ENLACE DE ABAJO -->
+            <img src="https://i.imgur.com/83pZ26Z.jpg" alt="Foto especial">
             <h2>Para el amor de mi vida 💜</h2>
+            <!-- AQUÍ PUEDES CAMBIAR EL TEXTO DE TU CARTA LIBREMENTE -->
             <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. ¡Te amo con todo mi corazón! ✨</p>
             <div class="firma">Con todo mi amor, tu novio.</div>
         </div>
@@ -411,17 +260,12 @@
 
     <script>
         let pastelData = {
-            tam: '140',
-            biz: '#ffc0cb',
-            rell: 'Arequipe',
-            glaseado: '#ffffff',
-            decoraciones: [],
-            tipoVela: 'normal',
-            cantVelas: '3',
-            colorVelas: '#ff70a6'
+            tam: '140', biz: '#ffc0cb', rell: 'Arequipe',
+            glaseado: '#ffffff', decoraciones: [],
+            tipoVela: 'normal', cantVelas: '3', colorVelas: '#ff70a6'
         };
-
         let velasApagadas = 0;
+        let golpesPiñata = 0;
 
         function irPaso(num) {
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
@@ -491,23 +335,49 @@
                         flame.classList.add('off');
                         velasApagadas++;
                         if (velasApagadas === totalVelas) {
-                            setTimeout(mostrarSobreFinal, 500);
+                            document.getElementById('instruccion-velas').innerText = "¡Todas las velas apagadas! 🎉";
+                            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                            document.getElementById('comerBtn').style.display = 'inline-block';
                         }
                     }
                 };
                 candlesBox.appendChild(candle);
             }
 
+            // Rellenar varias veces los elementos de decoración seleccionados para que no salga solo uno
+            let d1 = pastelData.decoraciones[0];
+            let d2 = pastelData.decoraciones[1];
+            let acumuladoStr = `${d1} ${d2} ${d1} ${d2} ${d1}`;
             let toppingsBox = document.getElementById('finalToppingsBox');
-            toppingsBox.innerHTML = `<span>${pastelData.decoraciones[0]}</span><span>${pastelData.decoraciones[1]}</span>`;
+            toppingsBox.innerHTML = `<span>${acumuladoStr}</span>`;
         }
 
-        function mostrarSobreFinal() {
-            document.getElementById('instruccion-velas').innerText = "¡Todas las velas apagadas! 🎉";
-            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        function comerPastel() {
+            let body = document.getElementById('finalCakeBody');
+            body.style.transform = 'scale(0.2)';
+            body.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('modal-container').style.display = 'flex';
-            }, 1200);
+                document.getElementById('final-screen').style.display = 'none';
+                document.getElementById('piñata-screen').style.display = 'flex';
+            }, 600);
+        }
+
+        function golpearPiñata() {
+            golpesPiñata++;
+            let piñataEl = document.getElementById('piñataEmoji');
+            piñataEl.style.transform = 'scale(1.2) rotate(' + (Math.random()*30 - 15) + 'deg)';
+            setTimeout(() => piñataEl.style.transform = 'scale(1)', 150);
+
+            document.getElementById('piñataContador').innerText = `Golpes: ${golpesPiñata} / 5`;
+
+            if (golpesPiñata >= 5) {
+                piñataEl.innerText = "💥🪅✨";
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+                setTimeout(() => {
+                    document.getElementById('piñata-screen').style.display = 'none';
+                    document.getElementById('modal-container').style.display = 'flex';
+                }, 1000);
+            }
         }
 
         function abrirCarta() {
