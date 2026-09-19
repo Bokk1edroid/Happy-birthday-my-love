@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #fff0f5;
+            background: #2c163a; /* Fondo morado elegante */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -16,168 +16,251 @@
             justify-content: center;
             min-height: 100vh;
             overflow-x: hidden;
+            color: #fff;
         }
 
         h1 {
-            color: #d63384;
+            color: #e0aaff;
             margin-bottom: 5px;
             text-align: center;
+            font-size: 24px;
         }
 
         p.instruction {
-            color: #6c757d;
-            margin-bottom: 20px;
+            color: #c77dff;
+            margin-bottom: 15px;
             text-align: center;
+            font-size: 14px;
+        }
+
+        /* Panel de opciones de personalización */
+        .options-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #e0aaff;
+        }
+
+        select, input[type="color"] {
+            padding: 5px;
+            border-radius: 8px;
+            border: none;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         /* Contenedor principal del juego */
         .game-container {
             display: flex;
-            flex-direction: row;
-            gap: 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
+            background: #3c1e52;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 350px;
+            width: 90%;
+            border: 2px solid #7b2cbf;
         }
 
         /* Área del pastel */
         #cake-area {
             position: relative;
-            width: 250px;
-            height: 280px;
-            background: #fcf8f7;
-            border: 3px dashed #f8d7da;
+            width: 220px;
+            height: 240px;
+            background: #241030;
+            border: 2px dashed #9d4edd;
             border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
+            overflow: hidden;
         }
 
         .base-cake {
-            width: 200px;
-            height: 120px;
-            background: #ffc0cb;
+            width: 180px;
+            height: 110px;
+            background: #ffc0cb; /* Color por defecto bizcocho */
             border-radius: 10px 10px 0 0;
             position: relative;
-            box-shadow: inset 0 -15px 0 rgba(0,0,0,0.05);
+            box-shadow: inset 0 -15px 0 rgba(0,0,0,0.1);
+            transition: background 0.3s;
         }
 
-        .base-cake::before {
-            content: '';
+        .frosting {
             position: absolute;
             top: 0;
             width: 100%;
-            height: 30px;
+            height: 35px;
             background: #ffffff;
             border-radius: 10px 10px 0 0;
+            transition: background 0.3s;
         }
 
-        /* Panel de adornos */
+        /* Panel de adornos para arrastrar */
         .decorations-panel {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .item {
-            font-size: 35px;
-            cursor: grab;
+            font-size: 28px;
+            cursor: pointer;
             user-select: none;
-            transition: transform 0.2s;
-            background: #fff;
-            border: 2px solid #eee;
+            background: #5a189a;
+            border: 2px solid #9d4edd;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
 
-        .item:hover {
-            transform: scale(1.1);
-            background: #fff5f8;
+        .item:active {
+            transform: scale(0.9);
         }
 
         /* Elementos colocados en el pastel */
         .dropped-item {
             position: absolute;
-            font-size: 30px;
+            font-size: 24px;
             cursor: pointer;
             user-select: none;
+            transform: translate(-50%, -50%);
         }
 
         /* Botón de terminar */
         .btn-finish {
-            margin-top: 25px;
-            background-color: #ff4d6d;
+            margin-top: 20px;
+            background-color: #9d4edd;
             color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 15px;
             border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
-            transition: background 0.2s;
+            box-shadow: 0 4px 10px rgba(157, 78, 221, 0.4);
+            font-weight: bold;
         }
 
         .btn-finish:hover {
-            background-color: #e03153;
+            background-color: #7b2cbf;
         }
 
-        /* Estilo de la Carta (Oculta al inicio) */
-        #letter-container {
+        /* CONTENEDOR DE LA CARTA Y SOBRE */
+        #modal-container {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
             z-index: 100;
         }
 
-        .letter {
-            background: #fffdf0;
-            padding: 40px;
+        /* El Sobre */
+        .envelope {
+            background: #7b2cbf;
+            width: 280px;
+            height: 180px;
             border-radius: 10px;
-            max-width: 450px;
-            width: 85%;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            text-align: left;
             position: relative;
-            animation: abrirCarta 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            cursor: pointer;
+            border: 2px solid #e0aaff;
+            animation: pulseEnvelope 1.5s infinite;
+        }
+
+        .envelope h3 {
+            color: #fff;
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 1px;
+        }
+
+        .envelope p {
+            color: #e0aaff;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        @keyframes pulseEnvelope {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* La Carta oculta */
+        .letter {
+            display: none;
+            background: #fffdf0;
+            color: #333;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 340px;
+            width: 85%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+            animation: abrirCarta 0.5s ease;
             border: 1px solid #e2d9bc;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .letter img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
         }
 
         .letter h2 {
-            color: #d63384;
+            color: #7b2cbf;
             margin-top: 0;
-            text-align: center;
+            font-size: 20px;
         }
 
         .letter p {
             color: #495057;
-            line-height: 1.6;
-            font-size: 16px;
+            line-height: 1.5;
+            font-size: 14px;
+            text-align: left;
         }
 
         .letter .firma {
             text-align: right;
             font-weight: bold;
-            color: #d63384;
-            margin-top: 20px;
+            color: #7b2cbf;
+            margin-top: 15px;
+            font-size: 14px;
         }
 
         @keyframes abrirCarta {
@@ -188,68 +271,115 @@
 </head>
 <body>
 
-    <h1>Decora este pastel para ti 🎂</h1>
-    <p class="instruction">Arrastra los ingredientes encima del pastel como más te guste.</p>
+    <h1>Decora tu pastel ideal 🎂💜</h1>
+    <p class="instruction">Elige los colores, toca los adornos para ponerlos y presiona terminar.</p>
 
-    <div class="game-container">
-        <!-- Zona del pastel -->
-        <div id="cake-area" ondragover="allowDrop(event)" ondrop="dropItem(event)">
-            <div class="base-cake"></div>
+    <!-- Controles de Personalización -->
+    <div class="options-panel">
+        <div class="option-group">
+            <label>Sabor/Bizcocho</label>
+            <select id="cakeFlavor" onchange="cambiarSabor()">
+                <option value="#ffc0cb">Fresa (Rosa)</option>
+                <option value="#d4a373">Vainilla / Tres Leches</option>
+                <option value="#582f0e">Chocolate</option>
+                <option value="#ffb703">Maracuyá / Naranja</option>
+            </select>
         </div>
-
-        <!-- Elemntos para arrastrar -->
-        <div class="decorations-panel">
-            <div class="item" draggable="true" ondragstart="drag(event)" id="item1">🍓</div>
-            <div class="item" draggable="true" ondragstart="drag(event)" id="item2">🕯️</div>
-            <div class="item" draggable="true" ondragstart="drag(event)" id="item3">💖</div>
-            <div class="item" draggable="true" ondragstart="drag(event)" id="item4">🍒</div>
+        <div class="option-group">
+            <label>Crema / Frosting</label>
+            <input type="color" id="frostingColor" value="#ffffff" onchange="cambiarFrosting()">
         </div>
     </div>
 
-    <button class="btn-finish" onclick="mostrarCarta()">¡Terminar pastel! ❤️</button>
+    <div class="game-container">
+        <!-- Zona del pastel -->
+        <div id="cake-area" onclick="agregarAdornoClick(event)">
+            <div class="base-cake" id="baseCake">
+                <div class="frosting" id="frostingLayer"></div>
+            </div>
+        </div>
 
-    <!-- Pantalla de la Carta (Oculta) -->
-    <div id="letter-container">
-        <div class="letter">
-            <h2>Para el amor de mi vida 💌</h2>
-            <p>Mi amor, si estás leyendo esto es porque terminaste de decorar tu pastel virtual (así como decoras mis días con puras risas y momentos hermosos).</p>
-            <p>Quería hacer algo único para recordarte lo muchísimo que te amo. Eres de lo mejor que me ha pasado y cada día a tu lado es un regalo.</p>
-            <p>Espero que te haya gustado este detallito hecho con mucho amor. ¡Te amo infinito! ❤️</p>
+        <!-- Panel de adornos (toca para agregar) -->
+        <div class="decorations-panel">
+            <div class="item" onclick="seleccionarAdorno('🍓')">🍓</div>
+            <div class="item" onclick="seleccionarAdorno('🕯️')">🕯️</div>
+            <div class="item" onclick="seleccionarAdorno('💜')">💜</div>
+            <div class="item" onclick="seleccionarAdorno('✨')">✨</div>
+            <div class="item" onclick="seleccionarAdorno('🍒')">🍒</div>
+            <div class="item" onclick="seleccionarAdorno('💖')">💖</div>
+            <div class="item" onclick="seleccionarAdorno('🍬')">🍬</div>
+        </div>
+    </div>
+
+    <button class="btn-finish" onclick="verSobre()">¡Terminar pastel! ❤️</button>
+
+    <!-- Modal con Sobre y Carta -->
+    <div id="modal-container">
+        <!-- El Sobre -->
+        <div class="envelope" id="envelope" onclick="abrirCartaReal()">
+            <h3>Open Me / Ábreme 💌</h3>
+            <p>Toca para leer tu sorpresa</p>
+        </div>
+
+        <!-- La Carta (inicialmente oculta dentro del modal) -->
+        <div class="letter" id="letterContent">
+            <!-- Puedes cambiar el enlace de la imagen de abajo por otra si quieres -->
+            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Foto especial">
+            <h2>Para el amor de mi vida 💜</h2>
+            <p>Mi amor, diseñé esto especialmente para ti porque cada momento a tu lado es tan dulce como este pastel. Adoro tu color favorito, adoro tu risa y todo lo que eres.</p>
+            <p>Gracias por decorar mis días y llenarlos de luz. Eres lo más bonito que tengo. ¡Te amo con todo mi corazón! ✨</p>
             <div class="firma">Con todo mi amor, tu novio.</div>
         </div>
     </div>
 
     <script>
-        function allowDrop(ev) {
-            ev.preventDefault();
+        let adornoSeleccionado = '🍓';
+
+        function cambiarSabor() {
+            let color = document.getElementById('cakeFlavor').value;
+            document.getElementById('baseCake').style.background = color;
         }
 
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.innerText);
+        function cambiarFrosting() {
+            let color = document.getElementById('frostingColor').value;
+            document.getElementById('frostingLayer').style.background = color;
         }
 
-        function dropItem(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
+        function seleccionarAdorno(emoji) {
+            adornoSeleccionado = emoji;
+        }
+
+        function agregarAdornoClick(ev) {
+            // Evitar que se ponga si se hace click fuera del pastel área exacta
+            let cakeArea = document.getElementById('cake-area');
+            let rect = cakeArea.getBoundingClientRect();
             
-            // Crear el elemento visual en el pastel
-            var newItem = document.createElement("div");
-            newItem.innerText = data;
+            let x = ev.clientX - rect.left;
+            let y = ev.clientY - rect.top;
+
+            let newItem = document.createElement("div");
+            newItem.innerText = adornoSeleccionado;
             newItem.className = "dropped-item";
-            
-            // Posicionar donde soltó el mouse dentro del cuadro del pastel
-            var rect = document.getElementById('cake-area').getBoundingClientRect();
-            var x = ev.clientX - rect.left - 15;
-            var y = ev.clientY - rect.top - 15;
-            
             newItem.style.left = x + 'px';
             newItem.style.top = y + 'px';
-            
-            document.getElementById('cake-area').appendChild(newItem);
+
+            // Permitir borrar el adorno si lo toca de nuevo
+            newItem.onclick = function(e) {
+                e.stopPropagation();
+                newItem.remove();
+            };
+
+            cakeArea.appendChild(newItem);
         }
 
-        function mostrarCarta() {
-            document.getElementById('letter-container').style.display = 'flex';
+        function verSobre() {
+            document.getElementById('modal-container').style.display = 'flex';
+        }
+
+        function abrirCartaReal() {
+            // Ocultar el sobre y mostrar la carta
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('letterContent').style.display = 'block';
         }
     </script>
 
