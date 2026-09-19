@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>para mi noviecita hermosa 💕</title>
-    <!-- Librería para el efecto de confeti -->
+    <title>Para mi noviecita hermosa 💕</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
@@ -50,11 +49,11 @@
 
         .step-container.active {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -80,7 +79,6 @@
         .opt-btn:hover {
             background: #9d4edd;
             border-color: #e0aaff;
-            transform: scale(1.02);
         }
 
         .opt-btn.active-choice {
@@ -164,7 +162,6 @@
             border-radius: 12px 12px 0 0;
         }
 
-        /* Velas personalizadas */
         .candles-box {
             position: absolute;
             top: -45px;
@@ -336,10 +333,10 @@
             <h1>Paso 1: Tamaño</h1>
             <p>Elige el tamaño del pastel</p>
             <div class="options-grid">
-                <button class="opt-btn" onclick="setTamano(140, 90)">Mini Cupcake</button>
-                <button class="opt-btn" onclick="setTamano(170, 100)">Mediano</button>
-                <button class="opt-btn" onclick="setTamano(200, 120)">Grande</button>
-                <button class="opt-btn" onclick="setTamano(170, 140)">Dos Pisos</button>
+                <button class="opt-btn active-choice" id="tam-mini" onclick="setTamano(140, 90, this)">Mini Cupcake</button>
+                <button class="opt-btn" id="tam-med" onclick="setTamano(170, 100, this)">Mediano</button>
+                <button class="opt-btn" id="tam-grand" onclick="setTamano(200, 120, this)">Grande</button>
+                <button class="opt-btn" id="tam-dos" onclick="setTamano(170, 140, this)">Dos Pisos</button>
             </div>
             <button class="btn" onclick="siguientePaso(2)">Siguiente ➡️</button>
         </div>
@@ -349,10 +346,10 @@
             <h1>Paso 2: Bizcocho</h1>
             <p>Selecciona el sabor base</p>
             <div class="options-grid">
-                <button class="opt-btn" onclick="setBizcocho('#ffc0cb')">🍓 Fresa</button>
-                <button class="opt-btn" onclick="setBizcocho('#d4a373')">🌾 Vainilla</button>
-                <button class="opt-btn" onclick="setBizcocho('#582f0e')">🍫 Chocolate</button>
-                <button class="opt-btn" onclick="setBizcocho('#ffb703')">🍊 Naranja</button>
+                <button class="opt-btn active-choice" id="biz-fresa" onclick="setBizcocho('#ffc0cb', this)">🍓 Fresa</button>
+                <button class="opt-btn" id="biz-vainilla" onclick="setBizcocho('#d4a373', this)">🌾 Vainilla</button>
+                <button class="opt-btn" id="biz-choco" onclick="setBizcocho('#582f0e', this)">🍫 Chocolate</button>
+                <button class="opt-btn" id="biz-naranja" onclick="setBizcocho('#ffb703', this)">🍊 Naranja</button>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-back" onclick="siguientePaso(1)">⬅️ Atrás</button>
@@ -365,10 +362,10 @@
             <h1>Paso 3: Relleno</h1>
             <p>¿Qué rico relleno llevará dentro?</p>
             <div class="options-grid">
-                <button class="opt-btn" onclick="setRelleno('Arequipe')">🍯 Arequipe</button>
-                <button class="opt-btn" onclick="setRelleno('Crema')">🥛 Crema Pastelera</button>
-                <button class="opt-btn" onclick="setRelleno('Frutos Rojos')">🍒 Frutos Rojos</button>
-                <button class="opt-btn" onclick="setRelleno('Nutella')">🌰 Nutella</button>
+                <button class="opt-btn active-choice" id="rell-arequipe" onclick="setRelleno('Arequipe', this)">🍯 Arequipe</button>
+                <button class="opt-btn" id="rell-crema" onclick="setRelleno('Crema', this)">🥛 Crema Pastelera</button>
+                <button class="opt-btn" id="rell-frutos" onclick="setRelleno('Frutos Rojos', this)">🍒 Frutos Rojos</button>
+                <button class="opt-btn" id="rell-nutella" onclick="setRelleno('Nutella', this)">🌰 Nutella</button>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-back" onclick="siguientePaso(2)">⬅️ Atrás</button>
@@ -419,10 +416,10 @@
 
             <p style="margin:5px 0; font-size:12px; color:#e0aaff;">Cantidad:</p>
             <div class="options-grid" style="margin-bottom:10px;">
-                <button class="opt-btn" onclick="setCantidadVelas(1)">1 Vela</button>
-                <button class="opt-btn active-choice" onclick="setCantidadVelas(3)">3 Velas</button>
-                <button class="opt-btn" onclick="setCantidadVelas(4)">4 Velas</button>
-                <button class="opt-btn" onclick="setCantidadVelas(5)">5 Velas</button>
+                <button class="opt-btn" onclick="setCantidadVelas(1, this)">1 Vela</button>
+                <button class="opt-btn active-choice" onclick="setCantidadVelas(3, this)">3 Velas</button>
+                <button class="opt-btn" onclick="setCantidadVelas(4, this)">4 Velas</button>
+                <button class="opt-btn" onclick="setCantidadVelas(5, this)">5 Velas</button>
             </div>
 
             <div class="color-picker-box" style="margin:5px 0;">
@@ -471,8 +468,8 @@
 
     <script>
         let pastelData = {
-            w: 170,
-            h: 100,
+            w: 140,
+            h: 90,
             bizcochoColor: '#ffc0cb',
             glaseadoColor: '#ffffff',
             decoraciones: [],
@@ -488,17 +485,23 @@
             document.getElementById('step-' + paso).classList.add('active');
         }
 
-        function setTamano(w, h) {
+        function setTamano(w, h, btn) {
             pastelData.w = w;
             pastelData.h = h;
+            document.querySelectorAll('#step-1 .opt-btn').forEach(b => b.classList.remove('active-choice'));
+            btn.classList.add('active-choice');
         }
 
-        function setBizcocho(color) {
+        function setBizcocho(color, btn) {
             pastelData.bizcochoColor = color;
+            document.querySelectorAll('#step-2 .opt-btn').forEach(b => b.classList.remove('active-choice'));
+            btn.classList.add('active-choice');
         }
 
-        function setRelleno(relleno) {
+        function setRelleno(relleno, btn) {
             pastelData.relleno = relleno;
+            document.querySelectorAll('#step-3 .opt-btn').forEach(b => b.classList.remove('active-choice'));
+            btn.classList.add('active-choice');
         }
 
         function setGlaseado(color) {
@@ -535,8 +538,11 @@
             btn.classList.add('active-choice');
         }
 
-        function setCantidadVelas(num) {
+        function setCantidadVelas(num, btn) {
             pastelData.velasCantidad = num;
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active-choice'));
+            btn.classList.add('active-choice');
         }
 
         function setColorVelas(color) {
@@ -569,23 +575,4 @@
                 } else {
                     candle.className = 'candle normal';
                     candle.style.background = pastelData.velasColor;
-                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
-                }
-                
-                candle.onclick = function() {
-                    const flame = document.getElementById('flame-' + i);
-                    if (!flame.classList.contains('off')) {
-                        flame.classList.add('off');
-                        velasApagadas++;
-                        
-                        if (velasApagadas === pastelData.velasCantidad) {
-                            setTimeout(lanzarConfetiYMostrarSobre, 500);
-                        }
-                    }
-                };
-                
-                candlesBox.appendChild(candle);
-            }
-
-            const toppingsBox = document.getElementById('finalToppingsBox');
-            toppingsBox.innerHTML = `<span>${pastelData.decoraciones[0]}</span><span>${pastelData.decoracio
+         
