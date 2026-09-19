@@ -57,19 +57,19 @@
         /* PANTALLA FINAL DEL PASTEL */
         #final-screen, #piñata-screen { display: none; flex-direction: column; align-items: center; }
         .cake-display {
-            position: relative; width: 200px; height: 160px;
+            position: relative; width: 220px; height: 180px;
             margin: 25px auto 10px auto; display: flex;
             justify-content: center; align-items: flex-end;
-        }
-        .cake-body {
-            width: 170px; height: 100px; border-radius: 12px 12px 0 0;
-            position: relative; box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
-            transition: transform 0.2s ease, clip-path 0.2s ease;
             cursor: pointer;
         }
-        .cake-frosting { position: absolute; top: 0; width: 100%; height: 30px; border-radius: 12px 12px 0 0; }
-        .candles-box { position: absolute; top: -45px; width: 100%; display: flex; justify-content: center; gap: 12px; }
-        .candle { width: 10px; height: 40px; border-radius: 3px; position: relative; cursor: pointer; }
+        .cake-body {
+            width: 180px; height: 110px; border-radius: 14px 14px 0 0;
+            position: relative; box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .cake-frosting { position: absolute; top: 0; width: 100%; height: 35px; border-radius: 14px 14px 0 0; }
+        .candles-box { position: absolute; top: -50px; width: 100%; display: flex; justify-content: center; gap: 14px; z-index: 5; }
+        .candle { width: 10px; height: 45px; border-radius: 3px; position: relative; cursor: pointer; transition: opacity 0.3s; }
         .candle.bengala { background: repeating-linear-gradient(45deg, #fff, #fff 4px, #333 4px, #333 8px) !important; border: 1px solid #ffd166; }
         .flame {
             width: 12px; height: 16px; background: #ffd166;
@@ -77,10 +77,10 @@
             box-shadow: 0 0 8px #ffd166;
         }
         .flame.bengala-flame { background: #00ffff; box-shadow: 0 0 12px #00ffff, 0 0 20px #fff; width: 14px; height: 18px; top: -18px; left: -2px; }
-        .flame.off { transform: scale(0); opacity: 0; }
+        .flame.off { transform: scale(0); opacity: 0; pointer-events: none; }
         .toppings-box {
-            position: absolute; top: 5px; width: 100%;
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; font-size: 18px; padding: 0 10px;
+            position: absolute; top: 8px; width: 100%;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; font-size: 18px; padding: 0 10px; z-index: 2;
         }
 
         /* PIÑATA */
@@ -120,16 +120,21 @@
 </head>
 <body>
 
+    <!-- MÚSICA DE FONDO (REEMPLAZA EL ENLACE ENTRE LAS COMILLAS POR EL LINK DE TU CANCIÓN MP3) -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-cute.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="card" id="wizard-card">
         <!-- PASO 1 -->
         <div class="step-container active" id="step-1">
             <h1>Paso 1: Tamaño</h1>
             <p>Elige el tamaño del pastel</p>
             <div class="options-grid">
-                <button class="opt-btn active-choice" onclick="selOpt(this, 'tam', '140')">Mini Cupcake</button>
-                <button class="opt-btn" onclick="selOpt(this, 'tam', '170')">Mediano</button>
-                <button class="opt-btn" onclick="selOpt(this, 'tam', '200')">Grande</button>
-                <button class="opt-btn" onclick="selOpt(this, 'tam', '175')">Dos Pisos</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'tam', '150')">Mini Cupcake</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '180')">Mediano</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '210')">Grande</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '180')">Dos Pisos</button>
             </div>
             <button class="btn" onclick="irPaso(2)">Siguiente ➡️</button>
         </div>
@@ -224,16 +229,16 @@
     <!-- PANTALLA FINAL DEL PASTEL -->
     <div class="card" id="final-screen">
         <h1>¡Apaga las velas y come el pastel! 🎂🍰</h1>
-        <p id="instruccion-velas">Toca las velas para apagarlas</p>
-        <div class="cake-display">
-            <!-- AL TOCAR EL PASTEL YA APAGADO, SE COME DE A POQUITOS -->
-            <div class="cake-body" id="finalCakeBody" onclick="darMordisco()">
+        <p id="instruccion-velas">Toca cada vela para apagarla</p>
+        
+        <div class="cake-display" id="cakeContainer" onclick="darMordisco()">
+            <div class="cake-body" id="finalCakeBody">
                 <div class="cake-frosting" id="finalCakeFrosting"></div>
                 <div class="candles-box" id="finalCandlesBox"></div>
                 <div class="toppings-box" id="finalToppingsBox"></div>
             </div>
         </div>
-        <p id="mordiscos-txt" style="font-size: 11px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
+        <p id="mordiscos-txt" style="font-size: 12px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
     </div>
 
     <!-- PANTALLA DE PIÑATA -->
@@ -262,7 +267,7 @@
 
     <script>
         let pastelData = {
-            tam: '140', biz: '#ffc0cb', rell: 'Arequipe',
+            tam: '150', biz: '#ffc0cb', rell: 'Arequipe',
             glaseado: '#ffffff', decoraciones: [],
             tipoVela: 'normal', cantVelas: '3', colorVelas: '#ff70a6'
         };
@@ -270,13 +275,28 @@
         let totalVelas = 0;
         let mordiscos = 0;
         let golpesPiñata = 0;
+        let musicaReproduciendose = false;
+
+        // Función para activar la música al primer toque del usuario
+        function iniciarMusica() {
+            if (!musicaReproduciendose) {
+                let audio = document.getElementById('bgMusic');
+                audio.play().then(() => {
+                    musicaReproduciendose = true;
+                }).catch(e => {
+                    console.log("El navegador requiere interacción adicional para reproducir audio.");
+                });
+            }
+        }
 
         function irPaso(num) {
+            iniciarMusica();
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
             document.getElementById('step-' + num).classList.add('active');
         }
 
         function selOpt(btn, categoria, valor) {
+            iniciarMusica();
             pastelData[categoria] = valor;
             let hermanos = btn.parentElement.querySelectorAll('.opt-btn');
             hermanos.forEach(b => b.classList.remove('active-choice'));
@@ -284,6 +304,7 @@
         }
 
         function toggleDeco(btn, item) {
+            iniciarMusica();
             let index = pastelData.decoraciones.indexOf(item);
             if (index > -1) {
                 pastelData.decoraciones.splice(index, 1);
@@ -307,6 +328,7 @@
         }
 
         function generarPastel() {
+            iniciarMusica();
             document.getElementById('wizard-card').style.display = 'none';
             document.getElementById('final-screen').style.display = 'flex';
 
@@ -321,6 +343,8 @@
             candlesBox.innerHTML = '';
             velasApagadas = 0;
             mordiscos = 0;
+            body.style.transform = 'scale(1)';
+            body.style.opacity = '1';
 
             totalVelas = parseInt(pastelData.cantVelas);
             for (let i = 0; i < totalVelas; i++) {
@@ -331,18 +355,19 @@
                 } else {
                     candle.className = 'candle normal';
                     candle.style.background = pastelData.colorVelas;
-                    candle.innerHTML = '<svg class="flame" id="flame-'+i+'" viewBox="0 0 12 16"><path d="M6 0 C2 5, 0 8, 0 11 C0 14, 3 16, 6 16 C9 16, 12 14, 12 11 C12 8, 10 5, 6 0 Z" fill="#ffd166"/></svg>';
+                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
                 }
                 
-                // Evitamos que al tocar la vela se active también el mordisco del pastel
                 candle.onclick = function(e) {
                     e.stopPropagation();
+                    iniciarMusica();
                     let flame = document.getElementById('flame-' + i);
                     if (!flame.classList.contains('off')) {
                         flame.classList.add('off');
+                        candle.style.opacity = '0.4';
                         velasApagadas++;
                         if (velasApagadas === totalVelas) {
-                            document.getElementById('instruccion-velas').innerText = "¡Velas apagadas! 🎂 Toca el pastel para comerlo.";
+                            document.getElementById('instruccion-velas').innerText = "¡Velas apagadas! 🎂 ¡Toca el pastel para comerlo!";
                             document.getElementById('mordiscos-txt').style.display = 'block';
                             confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
                         }
@@ -359,16 +384,15 @@
         }
 
         function darMordisco() {
+            iniciarMusica();
             if (velasApagadas < totalVelas) {
-                alert("¡Primero debes apagar todas las velas soplando/tocándolas! 🕯️");
+                alert("¡Primero debes apagar todas las velas tocándolas! 🕯️");
                 return;
             }
 
             mordiscos++;
             let body = document.getElementById('finalCakeBody');
-            
-            // Efecto visual de reducirse de tamaño por cada mordisco
-            let escala = 1 - (mordiscos * 0.2);
+            let escala = 1 - (mordiscos * 0.22);
             body.style.transform = `scale(${escala})`;
 
             document.getElementById('mordiscos-txt').innerText = `¡Comiendo pastel! (${mordiscos} / 4)`;
@@ -383,6 +407,7 @@
         }
 
         function golpearPiñata() {
+            iniciarMusica();
             golpesPiñata++;
             let piñataEl = document.getElementById('piñataEmoji');
             piñataEl.style.transform = 'scale(1.2) rotate(' + (Math.random()*30 - 15) + 'deg)';
@@ -397,13 +422,4 @@
                     document.getElementById('piñata-screen').style.display = 'none';
                     document.getElementById('modal-container').style.display = 'flex';
                 }, 1000);
-            }
-        }
-
-        function abrirCarta() {
-            document.getElementById('envelope').style.display = 'none';
-            document.getElementById('letterContent').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+      
