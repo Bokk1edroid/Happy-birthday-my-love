@@ -13,7 +13,7 @@
             font-family: Arial, sans-serif;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            min-height: 100vh; color: #fff;
+            min-height: 100vh; color: #ffffff;
         }
         .card {
             background: #3c1e52; padding: 25px;
@@ -54,7 +54,6 @@
         }
         .btn-back { background: #52307c; }
 
-        /* PANTALLA FINAL DEL PASTEL */
         #final-screen, #piñata-screen { display: none; flex-direction: column; align-items: center; }
         .cake-display {
             position: relative; width: 220px; height: 180px;
@@ -83,10 +82,8 @@
             display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; font-size: 18px; padding: 0 10px; z-index: 2;
         }
 
-        /* PIÑATA */
         .piñata-box {
             font-size: 80px; cursor: pointer; margin: 30px 0;
-            transition: transform 0.2s;
             animation: shake 1.5s infinite;
         }
         @keyframes shake {
@@ -96,7 +93,6 @@
             100% { transform: rotate(0deg); }
         }
 
-        /* MODAL DE CARTA */
         #modal-container {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.8); justify-content: center; align-items: center; z-index: 100;
@@ -120,13 +116,11 @@
 </head>
 <body>
 
-    <!-- MÚSICA DE FONDO CONECTADA A TU ARCHIVO -->
     <audio id="bgMusic" loop>
         <source src="Musica.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card" id="wizard-card">
-        <!-- PASO 1 -->
         <div class="step-container active" id="step-1">
             <h1>Paso 1: Tamaño</h1>
             <p>Elige el tamaño del pastel</p>
@@ -139,7 +133,6 @@
             <button class="btn" onclick="irPaso(2)">Siguiente ➡️</button>
         </div>
 
-        <!-- PASO 2 -->
         <div class="step-container" id="step-2">
             <h1>Paso 2: Bizcocho</h1>
             <p>Selecciona el sabor base</p>
@@ -155,7 +148,6 @@
             </div>
         </div>
 
-        <!-- PASO 3 -->
         <div class="step-container" id="step-3">
             <h1>Paso 3: Relleno</h1>
             <p>¿Qué rico relleno llevará dentro?</p>
@@ -171,7 +163,6 @@
             </div>
         </div>
 
-        <!-- PASO 4 -->
         <div class="step-container" id="step-4">
             <h1>Paso 4: Glaseado</h1>
             <p>Elige el color de la cobertura</p>
@@ -185,7 +176,6 @@
             </div>
         </div>
 
-        <!-- PASO 5 -->
         <div class="step-container" id="step-5">
             <h1>Paso 5: Decoración</h1>
             <p>Escoge exactamente <strong>2 opciones</strong>:</p>
@@ -201,7 +191,6 @@
             </div>
         </div>
 
-        <!-- PASO 6 -->
         <div class="step-container" id="step-6">
             <h1>Paso 6: Velas</h1>
             <p>Configura las velas</p>
@@ -226,7 +215,6 @@
         </div>
     </div>
 
-    <!-- PANTALLA FINAL DEL PASTEL -->
     <div class="card" id="final-screen">
         <h1>¡Apaga las velas y come el pastel! 🎂🍰</h1>
         <p id="instruccion-velas">Toca cada vela para apagarla</p>
@@ -241,7 +229,6 @@
         <p id="mordiscos-txt" style="font-size: 12px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
     </div>
 
-    <!-- PANTALLA DE PIÑATA -->
     <div class="card" id="piñata-screen">
         <h1>¡Rompe la Piñata! 🪅</h1>
         <p>¡Toca la piñata varias veces hasta romperla!</p>
@@ -249,14 +236,12 @@
         <p id="piñataContador">Golpes: 0 / 5</p>
     </div>
 
-    <!-- MODAL DE CARTA -->
     <div id="modal-container">
         <div class="envelope-white" id="envelope" onclick="abrirCarta()">
             <div class="red-heart">❤️</div>
             <p style="color:#555; font-weight:bold; margin-top:10px;">Ábreme</p>
         </div>
         <div class="letter" id="letterContent">
-            <!-- FOTO CONECTADA A TU ARCHIVO -->
             <img src="foto.jpg" alt="Foto especial">
             <h2>Para el amor de mi vida 💜</h2>
             <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. ¡Te amo con todo mi corazón! ✨</p>
@@ -276,14 +261,13 @@
         let golpesPiñata = 0;
         let musicaReproduciendose = false;
 
-        // Función para activar la música al primer toque del usuario
         function iniciarMusica() {
             if (!musicaReproduciendose) {
                 let audio = document.getElementById('bgMusic');
                 audio.play().then(() => {
                     musicaReproduciendose = true;
                 }).catch(e => {
-                    console.log("El navegador requiere interacción adicional para reproducir audio.");
+                    console.log("Audio esperando interacción.");
                 });
             }
         }
@@ -427,4 +411,8 @@
         function abrirCarta() {
             iniciarMusica();
             document.getElementById('envelope').style.display = 'none';
-            document.getElementById('letterContent').style.display = 'b
+            document.getElementById('letterContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
