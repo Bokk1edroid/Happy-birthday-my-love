@@ -120,9 +120,9 @@
 </head>
 <body>
 
-    <!-- MÚSICA DE FONDO (REEMPLAZA EL ENLACE ENTRE LAS COMILLAS POR EL LINK DE TU CANCIÓN MP3) -->
+    <!-- MÚSICA DE FONDO CONECTADA A TU ARCHIVO -->
     <audio id="bgMusic" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-cute.mp3" type="audio/mpeg">
+        <source src="Musica.mp3" type="audio/mpeg">
     </audio>
 
     <div class="card" id="wizard-card">
@@ -256,10 +256,9 @@
             <p style="color:#555; font-weight:bold; margin-top:10px;">Ábreme</p>
         </div>
         <div class="letter" id="letterContent">
-            <!-- AQUÍ PUEDES CAMBIAR TU FOTO REEMPLAZANDO EL ENLACE DE ABAJO -->
-            <img src="https://i.imgur.com/83pZ26Z.jpg" alt="Foto especial">
+            <!-- FOTO CONECTADA A TU ARCHIVO -->
+            <img src="foto.jpg" alt="Foto especial">
             <h2>Para el amor de mi vida 💜</h2>
-            <!-- AQUÍ PUEDES CAMBIAR EL TEXTO DE TU CARTA LIBREMENTE -->
             <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. ¡Te amo con todo mi corazón! ✨</p>
             <div class="firma">Con todo mi amor, tu novio.</div>
         </div>
@@ -422,4 +421,10 @@
                     document.getElementById('piñata-screen').style.display = 'none';
                     document.getElementById('modal-container').style.display = 'flex';
                 }, 1000);
-      
+            }
+        }
+
+        function abrirCarta() {
+            iniciarMusica();
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('letterContent').style.display = 'b
