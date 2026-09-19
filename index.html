@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi noviecita hermosa 💕</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff0f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        p.instruction {
+            color: #6c757d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Contenedor principal del juego */
+        .game-container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Área del pastel */
+        #cake-area {
+            position: relative;
+            width: 250px;
+            height: 280px;
+            background: #fcf8f7;
+            border: 3px dashed #f8d7da;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 20px;
+        }
+
+        .base-cake {
+            width: 200px;
+            height: 120px;
+            background: #ffc0cb;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            box-shadow: inset 0 -15px 0 rgba(0,0,0,0.05);
+        }
+
+        .base-cake::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 30px;
+            background: #ffffff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Panel de adornos */
+        .decorations-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .item {
+            font-size: 35px;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s;
+            background: #fff;
+            border: 2px solid #eee;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .item:hover {
+            transform: scale(1.1);
+            background: #fff5f8;
+        }
+
+        /* Elementos colocados en el pastel */
+        .dropped-item {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Botón de terminar */
+        .btn-finish {
+            margin-top: 25px;
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 77, 109, 0.3);
+            transition: background 0.2s;
+        }
+
+        .btn-finish:hover {
+            background-color: #e03153;
+        }
+
+        /* Estilo de la Carta (Oculta al inicio) */
+        #letter-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .letter {
+            background: #fffdf0;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 450px;
+            width: 85%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            text-align: left;
+            position: relative;
+            animation: abrirCarta 0.6s ease;
+            border: 1px solid #e2d9bc;
+        }
+
+        .letter h2 {
+            color: #d63384;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .letter p {
+            color: #495057;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .letter .firma {
+            text-align: right;
+            font-weight: bold;
+            color: #d63384;
+            margin-top: 20px;
+        }
+
+        @keyframes abrirCarta {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Decora este pastel para ti 🎂</h1>
+    <p class="instruction">Arrastra los ingredientes encima del pastel como más te guste.</p>
+
+    <div class="game-container">
+        <!-- Zona del pastel -->
+        <div id="cake-area" ondragover="allowDrop(event)" ondrop="dropItem(event)">
+            <div class="base-cake"></div>
+        </div>
+
+        <!-- Elemntos para arrastrar -->
+        <div class="decorations-panel">
+            <div class="item" draggable="true" ondragstart="drag(event)" id="item1">🍓</div>
+            <div class="item" draggable="true" ondragstart="drag(event)" id="item2">🕯️</div>
+            <div class="item" draggable="true" ondragstart="drag(event)" id="item3">💖</div>
+            <div class="item" draggable="true" ondragstart="drag(event)" id="item4">🍒</div>
+        </div>
+    </div>
+
+    <button class="btn-finish" onclick="mostrarCarta()">¡Terminar pastel! ❤️</button>
+
+    <!-- Pantalla de la Carta (Oculta) -->
+    <div id="letter-container">
+        <div class="letter">
+            <h2>Para el amor de mi vida 💌</h2>
+            <p>Mi amor, si estás leyendo esto es porque terminaste de decorar tu pastel virtual (así como decoras mis días con puras risas y momentos hermosos).</p>
+            <p>Quería hacer algo único para recordarte lo muchísimo que te amo. Eres de lo mejor que me ha pasado y cada día a tu lado es un regalo.</p>
+            <p>Espero que te haya gustado este detallito hecho con mucho amor. ¡Te amo infinito! ❤️</p>
+            <div class="firma">Con todo mi amor, tu novio.</div>
+        </div>
+    </div>
+
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.innerText);
+        }
+
+        function dropItem(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            
+            // Crear el elemento visual en el pastel
+            var newItem = document.createElement("div");
+            newItem.innerText = data;
+            newItem.className = "dropped-item";
+            
+            // Posicionar donde soltó el mouse dentro del cuadro del pastel
+            var rect = document.getElementById('cake-area').getBoundingClientRect();
+            var x = ev.clientX - rect.left - 15;
+            var y = ev.clientY - rect.top - 15;
+            
+            newItem.style.left = x + 'px';
+            newItem.style.top = y + 'px';
+            
+            document.getElementById('cake-area').appendChild(newItem);
+        }
+
+        function mostrarCarta() {
+            document.getElementById('letter-container').style.display = 'flex';
+        }
+    </script>
+
+</body>
+</html>
