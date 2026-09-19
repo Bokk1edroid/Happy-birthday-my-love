@@ -6,18 +6,20 @@
     <title>Para mi noviecita hermosa 💕</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             padding: 0;
             background: #2c163a;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             color: #fff;
-            overflow-x: hidden;
         }
 
         .card {
@@ -49,12 +51,6 @@
 
         .step-container.active {
             display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .options-grid {
@@ -72,13 +68,7 @@
             border-radius: 12px;
             cursor: pointer;
             font-size: 13px;
-            transition: all 0.2s;
             font-weight: bold;
-        }
-
-        .opt-btn:hover {
-            background: #9d4edd;
-            border-color: #e0aaff;
         }
 
         .opt-btn.active-choice {
@@ -121,15 +111,11 @@
             font-size: 13px;
         }
 
-        .btn:hover {
-            background: #7b2cbf;
-        }
-
         .btn-back {
             background: #52307c;
         }
 
-        /* PASTEL FINAL */
+        /* PANTALLA FINAL DEL PASTEL */
         #final-screen {
             display: none;
             flex-direction: column;
@@ -192,9 +178,7 @@
             position: absolute;
             top: -15px;
             left: -1px;
-            animation: flicker 0.6s infinite alternate;
             box-shadow: 0 0 8px #ffd166;
-            transition: all 0.3s;
         }
 
         .flame.bengala-flame {
@@ -211,11 +195,6 @@
             opacity: 0;
         }
 
-        @keyframes flicker {
-            0% { transform: scale(1); opacity: 0.9; }
-            100% { transform: scale(1.15); opacity: 1; }
-        }
-
         .toppings-box {
             position: absolute;
             top: 25px;
@@ -226,7 +205,7 @@
             padding: 0 10px;
         }
 
-        /* MODAL DE SOBRE BLANCO CON CORAZÓN ROJO Y CARTA */
+        /* MODAL DE CARTA */
         #modal-container {
             display: none;
             position: fixed;
@@ -250,35 +229,11 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 2px solid #ddd;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            position: relative;
-            animation: pulse 1.5s infinite;
         }
 
         .red-heart {
             font-size: 50px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-            animation: heartbeat 1.2s infinite;
-        }
-
-        .envelope-white p {
-            color: #555;
-            font-size: 13px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
         }
 
         .letter {
@@ -293,7 +248,6 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.3);
             max-height: 85vh;
             overflow-y: auto;
-            border: 1px solid #e2d9bc;
         }
 
         .letter img {
@@ -328,117 +282,110 @@
 <body>
 
     <div class="card" id="wizard-card">
-        <!-- PASO 1: TAMAÑO -->
+        <!-- PASO 1 -->
         <div class="step-container active" id="step-1">
             <h1>Paso 1: Tamaño</h1>
             <p>Elige el tamaño del pastel</p>
             <div class="options-grid">
-                <button class="opt-btn active-choice" id="tam-mini" onclick="setTamano(140, 90, this)">Mini Cupcake</button>
-                <button class="opt-btn" id="tam-med" onclick="setTamano(170, 100, this)">Mediano</button>
-                <button class="opt-btn" id="tam-grand" onclick="setTamano(200, 120, this)">Grande</button>
-                <button class="opt-btn" id="tam-dos" onclick="setTamano(170, 140, this)">Dos Pisos</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'tam', '140')">Mini Cupcake</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '170')">Mediano</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '200')">Grande</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tam', '175')">Dos Pisos</button>
             </div>
-            <button class="btn" onclick="siguientePaso(2)">Siguiente ➡️</button>
+            <button class="btn" onclick="irPaso(2)">Siguiente ➡️</button>
         </div>
 
-        <!-- PASO 2: BIZCOCHO -->
+        <!-- PASO 2 -->
         <div class="step-container" id="step-2">
             <h1>Paso 2: Bizcocho</h1>
             <p>Selecciona el sabor base</p>
             <div class="options-grid">
-                <button class="opt-btn active-choice" id="biz-fresa" onclick="setBizcocho('#ffc0cb', this)">🍓 Fresa</button>
-                <button class="opt-btn" id="biz-vainilla" onclick="setBizcocho('#d4a373', this)">🌾 Vainilla</button>
-                <button class="opt-btn" id="biz-choco" onclick="setBizcocho('#582f0e', this)">🍫 Chocolate</button>
-                <button class="opt-btn" id="biz-naranja" onclick="setBizcocho('#ffb703', this)">🍊 Naranja</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'biz', '#ffc0cb')">🍓 Fresa</button>
+                <button class="opt-btn" onclick="selOpt(this, 'biz', '#d4a373')">🌾 Vainilla</button>
+                <button class="opt-btn" onclick="selOpt(this, 'biz', '#582f0e')">🍫 Chocolate</button>
+                <button class="opt-btn" onclick="selOpt(this, 'biz', '#ffb703')">🍊 Naranja</button>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-back" onclick="siguientePaso(1)">⬅️ Atrás</button>
-                <button class="btn" onclick="siguientePaso(3)">Siguiente ➡️</button>
+                <button class="btn btn-back" onclick="irPaso(1)">⬅️ Atrás</button>
+                <button class="btn" onclick="irPaso(3)">Siguiente ➡️</button>
             </div>
         </div>
 
-        <!-- PASO 3: RELLENO -->
+        <!-- PASO 3 -->
         <div class="step-container" id="step-3">
             <h1>Paso 3: Relleno</h1>
             <p>¿Qué rico relleno llevará dentro?</p>
             <div class="options-grid">
-                <button class="opt-btn active-choice" id="rell-arequipe" onclick="setRelleno('Arequipe', this)">🍯 Arequipe</button>
-                <button class="opt-btn" id="rell-crema" onclick="setRelleno('Crema', this)">🥛 Crema Pastelera</button>
-                <button class="opt-btn" id="rell-frutos" onclick="setRelleno('Frutos Rojos', this)">🍒 Frutos Rojos</button>
-                <button class="opt-btn" id="rell-nutella" onclick="setRelleno('Nutella', this)">🌰 Nutella</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'rell', 'Arequipe')">🍯 Arequipe</button>
+                <button class="opt-btn" onclick="selOpt(this, 'rell', 'Crema')">🥛 Crema</button>
+                <button class="opt-btn" onclick="selOpt(this, 'rell', 'Frutos')">🍒 Frutos Rojos</button>
+                <button class="opt-btn" onclick="selOpt(this, 'rell', 'Nutella')">🌰 Nutella</button>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-back" onclick="siguientePaso(2)">⬅️ Atrás</button>
-                <button class="btn" onclick="siguientePaso(4)">Siguiente ➡️</button>
+                <button class="btn btn-back" onclick="irPaso(2)">⬅️ Atrás</button>
+                <button class="btn" onclick="irPaso(4)">Siguiente ➡️</button>
             </div>
         </div>
 
-        <!-- PASO 4: GLASEADO Y COLOR -->
+        <!-- PASO 4 -->
         <div class="step-container" id="step-4">
             <h1>Paso 4: Glaseado</h1>
             <p>Elige el color de la cobertura</p>
             <div class="color-picker-box">
                 <label>Color del Glaseado:</label>
-                <input type="color" id="pickerGlaseado" value="#ffffff" onchange="setGlaseado(this.value)">
+                <input type="color" id="pickerGlaseado" value="#ffffff" onchange="pastelData.glaseado = this.value">
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-back" onclick="siguientePaso(3)">⬅️ Atrás</button>
-                <button class="btn" onclick="siguientePaso(5)">Siguiente ➡️</button>
+                <button class="btn btn-back" onclick="irPaso(3)">⬅️ Atrás</button>
+                <button class="btn" onclick="irPaso(5)">Siguiente ➡️</button>
             </div>
         </div>
 
-        <!-- PASO 5: 2 DECORACIONES -->
+        <!-- PASO 5 -->
         <div class="step-container" id="step-5">
             <h1>Paso 5: Decoración</h1>
             <p>Escoge exactamente <strong>2 opciones</strong>:</p>
             <div class="options-grid">
-                <button class="opt-btn" id="deco-🍓" onclick="toggleDecoracion('🍓', this)">🍓 Fresas</button>
-                <button class="opt-btn" id="deco-✨" onclick="toggleDecoracion('✨', this)">✨ Sprinkles</button>
-                <button class="opt-btn" id="deco-🍫" onclick="toggleDecoracion('🍫', this)">🍫 Chocolates</button>
-                <button class="opt-btn" id="deco-🍒" onclick="toggleDecoracion('🍒', this)">🍒 Cerezas</button>
+                <button class="opt-btn" onclick="toggleDeco(this, '🍓')">🍓 Fresas</button>
+                <button class="opt-btn" onclick="toggleDeco(this, '✨')">✨ Sprinkles</button>
+                <button class="opt-btn" onclick="toggleDeco(this, '🍫')">🍫 Chocolates</button>
+                <button class="opt-btn" onclick="toggleDeco(this, '🍒')">🍒 Cerezas</button>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-back" onclick="siguientePaso(4)">⬅️ Atrás</button>
-                <button class="btn" onclick="validarDecoraciones()">Siguiente ➡️</button>
+                <button class="btn btn-back" onclick="irPaso(4)">⬅️ Atrás</button>
+                <button class="btn" onclick="validarDeco()">Siguiente ➡️</button>
             </div>
         </div>
 
-        <!-- PASO 6: TIPO, CANTIDAD Y COLOR DE VELAS -->
+        <!-- PASO 6 -->
         <div class="step-container" id="step-6">
             <h1>Paso 6: Velas</h1>
-            <p>Configura las velas del pastel</p>
-            
-            <p style="margin:5px 0; font-size:12px; color:#e0aaff;">Tipo de vela:</p>
+            <p>Configura las velas</p>
             <div class="options-grid" style="margin-bottom:10px;">
-                <button class="opt-btn active-choice" id="tipo-normal" onclick="setTipoVela('normal', this)">🕯️ Normales</button>
-                <button class="opt-btn" id="tipo-bengala" onclick="setTipoVela('bengala', this)">✨ Bengala / Chispa</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'tipoVela', 'normal')">🕯️ Normales</button>
+                <button class="opt-btn" onclick="selOpt(this, 'tipoVela', 'bengala')">✨ Bengala</button>
             </div>
-
-            <p style="margin:5px 0; font-size:12px; color:#e0aaff;">Cantidad:</p>
             <div class="options-grid" style="margin-bottom:10px;">
-                <button class="opt-btn" onclick="setCantidadVelas(1, this)">1 Vela</button>
-                <button class="opt-btn active-choice" onclick="setCantidadVelas(3, this)">3 Velas</button>
-                <button class="opt-btn" onclick="setCantidadVelas(4, this)">4 Velas</button>
-                <button class="opt-btn" onclick="setCantidadVelas(5, this)">5 Velas</button>
+                <button class="opt-btn" onclick="selOpt(this, 'cantVelas', '1')">1 Vela</button>
+                <button class="opt-btn active-choice" onclick="selOpt(this, 'cantVelas', '3')">3 Velas</button>
+                <button class="opt-btn" onclick="selOpt(this, 'cantVelas', '4')">4 Velas</button>
+                <button class="opt-btn" onclick="selOpt(this, 'cantVelas', '5')">5 Velas</button>
             </div>
-
             <div class="color-picker-box" style="margin:5px 0;">
                 <label style="font-size:12px;">Color de las Velas:</label>
-                <input type="color" id="pickerVelas" value="#ff70a6" onchange="setColorVelas(this.value)">
+                <input type="color" id="pickerVelas" value="#ff70a6" onchange="pastelData.colorVelas = this.value">
             </div>
-
             <div class="nav-buttons">
-                <button class="btn btn-back" onclick="siguientePaso(5)">⬅️ Atrás</button>
-                <button class="btn" onclick="generarPastelFinal()">¡Ver mi Pastel! 🎂</button>
+                <button class="btn btn-back" onclick="irPaso(5)">⬅️ Atrás</button>
+                <button class="btn" onclick="generarPastel()">¡Ver mi Pastel! 🎂</button>
             </div>
         </div>
     </div>
 
-    <!-- PANTALLA FINAL DEL PASTEL -->
+    <!-- PANTALLA FINAL -->
     <div class="card" id="final-screen">
         <h1>¡Toca cada velita para apagarla! 🎂✨</h1>
         <p id="instruccion-velas">Faltan velas por apagar</p>
-        
         <div class="cake-display">
             <div class="cake-body" id="finalCakeBody">
                 <div class="cake-frosting" id="finalCakeFrosting"></div>
@@ -448,68 +395,48 @@
         </div>
     </div>
 
-    <!-- MODAL DE SOBRE BLANCO CON CORAZÓN ROJO Y CARTA -->
+    <!-- MODAL -->
     <div id="modal-container">
-        <!-- Sobre Blanco con Corazón Rojo -->
-        <div class="envelope-white" id="envelope" onclick="abrirCartaReal()">
+        <div class="envelope-white" id="envelope" onclick="abrirCarta()">
             <div class="red-heart">❤️</div>
-            <p>Ábreme</p>
+            <p style="color:#555; font-weight:bold; margin-top:10px;">Ábreme</p>
         </div>
-
-        <!-- La Carta -->
         <div class="letter" id="letterContent">
-            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Nuestra foto">
+            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Foto">
             <h2>Para el amor de mi vida 💜</h2>
-            <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. Gracias por ser mi persona favorita y llenar mi vida de luz.</p>
-            <p>¡Te amo con todo mi corazón! ✨</p>
+            <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. ¡Te amo con todo mi corazón! ✨</p>
             <div class="firma">Con todo mi amor, tu novio.</div>
         </div>
     </div>
 
     <script>
         let pastelData = {
-            w: 140,
-            h: 90,
-            bizcochoColor: '#ffc0cb',
-            glaseadoColor: '#ffffff',
+            tam: '140',
+            biz: '#ffc0cb',
+            rell: 'Arequipe',
+            glaseado: '#ffffff',
             decoraciones: [],
             tipoVela: 'normal',
-            velasCantidad: 3,
-            velasColor: '#ff70a6'
+            cantVelas: '3',
+            colorVelas: '#ff70a6'
         };
 
         let velasApagadas = 0;
 
-        function siguientePaso(paso) {
+        function irPaso(num) {
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-' + paso).classList.add('active');
+            document.getElementById('step-' + num).classList.add('active');
         }
 
-        function setTamano(w, h, btn) {
-            pastelData.w = w;
-            pastelData.h = h;
-            document.querySelectorAll('#step-1 .opt-btn').forEach(b => b.classList.remove('active-choice'));
+        function selOpt(btn, categoria, valor) {
+            pastelData[categoria] = valor;
+            let hermanos = btn.parentElement.querySelectorAll('.opt-btn');
+            hermanos.forEach(b => b.classList.remove('active-choice'));
             btn.classList.add('active-choice');
         }
 
-        function setBizcocho(color, btn) {
-            pastelData.bizcochoColor = color;
-            document.querySelectorAll('#step-2 .opt-btn').forEach(b => b.classList.remove('active-choice'));
-            btn.classList.add('active-choice');
-        }
-
-        function setRelleno(relleno, btn) {
-            pastelData.relleno = relleno;
-            document.querySelectorAll('#step-3 .opt-btn').forEach(b => b.classList.remove('active-choice'));
-            btn.classList.add('active-choice');
-        }
-
-        function setGlaseado(color) {
-            pastelData.glaseadoColor = color;
-        }
-
-        function toggleDecoracion(item, btn) {
-            const index = pastelData.decoraciones.indexOf(item);
+        function toggleDeco(btn, item) {
+            let index = pastelData.decoraciones.indexOf(item);
             if (index > -1) {
                 pastelData.decoraciones.splice(index, 1);
                 btn.classList.remove('active-choice');
@@ -523,56 +450,70 @@
             }
         }
 
-        function validarDecoraciones() {
+        function validarDeco() {
             if (pastelData.decoraciones.length !== 2) {
-                alert("Por favor escoge exactamente 2 opciones de decoración.");
+                alert("Por favor escoge exactamente 2 opciones.");
                 return;
             }
-            siguientePaso(6);
+            irPaso(6);
         }
 
-        function setTipoVela(tipo, btn) {
-            pastelData.tipoVela = tipo;
-            document.getElementById('tipo-normal').classList.remove('active-choice');
-            document.getElementById('tipo-bengala').classList.remove('active-choice');
-            btn.classList.add('active-choice');
-        }
-
-        function setCantidadVelas(num, btn) {
-            pastelData.velasCantidad = num;
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active-choice'));
-            btn.classList.add('active-choice');
-        }
-
-        function setColorVelas(color) {
-            pastelData.velasColor = color;
-        }
-
-        function generarPastelFinal() {
+        function generarPastel() {
             document.getElementById('wizard-card').style.display = 'none';
-            const finalScreen = document.getElementById('final-screen');
-            finalScreen.style.display = 'flex';
+            document.getElementById('final-screen').style.display = 'flex';
 
-            const body = document.getElementById('finalCakeBody');
-            body.style.width = pastelData.w + 'px';
-            body.style.height = pastelData.h + 'px';
-            body.style.background = pastelData.bizcochoColor;
+            let body = document.getElementById('finalCakeBody');
+            body.style.width = pastelData.tam + 'px';
+            body.style.background = pastelData.biz;
 
-            const frosting = document.getElementById('finalCakeFrosting');
-            frosting.style.background = pastelData.glaseadoColor;
+            let frosting = document.getElementById('finalCakeFrosting');
+            frosting.style.background = pastelData.glaseado;
 
-            const candlesBox = document.getElementById('finalCandlesBox');
+            let candlesBox = document.getElementById('finalCandlesBox');
             candlesBox.innerHTML = '';
             velasApagadas = 0;
 
-            for (let i = 0; i < pastelData.velasCantidad; i++) {
-                const candle = document.createElement('div');
-                
+            let totalVelas = parseInt(pastelData.cantVelas);
+            for (let i = 0; i < totalVelas; i++) {
+                let candle = document.createElement('div');
                 if (pastelData.tipoVela === 'bengala') {
                     candle.className = 'candle bengala';
                     candle.innerHTML = '<div class="flame bengala-flame" id="flame-'+i+'"></div>';
                 } else {
                     candle.className = 'candle normal';
-                    candle.style.background = pastelData.velasColor;
-         
+                    candle.style.background = pastelData.colorVelas;
+                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
+                }
+                
+                candle.onclick = function() {
+                    let flame = document.getElementById('flame-' + i);
+                    if (!flame.classList.contains('off')) {
+                        flame.classList.add('off');
+                        velasApagadas++;
+                        if (velasApagadas === totalVelas) {
+                            setTimeout(mostrarSobreFinal, 500);
+                        }
+                    }
+                };
+                candlesBox.appendChild(candle);
+            }
+
+            let toppingsBox = document.getElementById('finalToppingsBox');
+            toppingsBox.innerHTML = `<span>${pastelData.decoraciones[0]}</span><span>${pastelData.decoraciones[1]}</span>`;
+        }
+
+        function mostrarSobreFinal() {
+            document.getElementById('instruccion-velas').innerText = "¡Todas las velas apagadas! 🎉";
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            setTimeout(() => {
+                document.getElementById('modal-container').style.display = 'flex';
+            }, 1200);
+        }
+
+        function abrirCarta() {
+            document.getElementById('envelope').style.display = 'none';
+            document.getElementById('letterContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
