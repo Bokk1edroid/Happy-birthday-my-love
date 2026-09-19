@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>para mi noviecita hermosa 💕</title>
+    <!-- Librería para el efecto de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -32,7 +34,7 @@
 
         h1 {
             color: #e0aaff;
-            font-size: 21px;
+            font-size: 20px;
             margin-bottom: 5px;
         }
 
@@ -75,7 +77,7 @@
             font-weight: bold;
         }
 
-        .opt-btn:hover, .opt-btn.selected {
+        .opt-btn:hover {
             background: #9d4edd;
             border-color: #e0aaff;
             transform: scale(1.02);
@@ -129,7 +131,7 @@
             background: #52307c;
         }
 
-        /* PASTEL FINAL EN PANTALLA */
+        /* PASTEL FINAL */
         #final-screen {
             display: none;
             flex-direction: column;
@@ -140,7 +142,7 @@
             position: relative;
             width: 200px;
             height: 160px;
-            margin: 20px auto;
+            margin: 25px auto 10px auto;
             display: flex;
             justify-content: center;
             align-items: flex-end;
@@ -152,7 +154,6 @@
             border-radius: 12px 12px 0 0;
             position: relative;
             box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
-            transition: background 0.3s;
         }
 
         .cake-frosting {
@@ -161,41 +162,61 @@
             width: 100%;
             height: 30px;
             border-radius: 12px 12px 0 0;
-            transition: background 0.3s;
         }
 
-        /* Velas en el pastel final */
+        /* Velas personalizadas */
         .candles-box {
             position: absolute;
-            top: -35px;
+            top: -45px;
             width: 100%;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .candle {
             width: 10px;
-            height: 35px;
-            background: #ff70a6;
+            height: 40px;
             border-radius: 3px;
             position: relative;
+            cursor: pointer;
+        }
+
+        /* Estilo para vela normal o bengala */
+        .candle.normal {
+            /* Color asignado por JS */
+        }
+
+        .candle.bengala {
+            background: repeating-linear-gradient(45deg, #fff, #fff 4px, #333 4px, #333 8px) !important;
+            border: 1px solid #ffd166;
         }
 
         .flame {
-            width: 10px;
-            height: 14px;
+            width: 12px;
+            height: 16px;
             background: #ffd166;
             border-radius: 50% 50% 20% 20%;
             position: absolute;
-            top: -14px;
-            left: 0;
+            top: -15px;
+            left: -1px;
             animation: flicker 0.6s infinite alternate;
             box-shadow: 0 0 8px #ffd166;
+            transition: all 0.3s;
+        }
+
+        .flame.bengala-flame {
+            background: #00ffff; /* Chispa brillante estilo bengala */
+            box-shadow: 0 0 12px #00ffff, 0 0 20px #fff;
+            width: 14px;
+            height: 18px;
+            top: -18px;
+            left: -2px;
         }
 
         .flame.off {
-            display: none;
+            transform: scale(0);
+            opacity: 0;
         }
 
         @keyframes flicker {
@@ -203,7 +224,6 @@
             100% { transform: scale(1.15); opacity: 1; }
         }
 
-        /* Adornos sobre el pastel final */
         .toppings-box {
             position: absolute;
             top: 25px;
@@ -214,7 +234,7 @@
             padding: 0 10px;
         }
 
-        /* MODAL DE SOBRE Y CARTA */
+        /* MODAL DE SOBRE BLANCO CON CORAZÓN ROJO Y CARTA */
         #modal-container {
             display: none;
             position: fixed;
@@ -228,8 +248,8 @@
             z-index: 100;
         }
 
-        .envelope {
-            background: #7b2cbf;
+        .envelope-white {
+            background: #ffffff;
             width: 280px;
             height: 180px;
             border-radius: 10px;
@@ -238,14 +258,34 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 2px solid #e0aaff;
+            border: 2px solid #ddd;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
             animation: pulse 1.5s infinite;
+        }
+
+        .red-heart {
+            font-size: 50px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            animation: heartbeat 1.2s infinite;
+        }
+
+        .envelope-white p {
+            color: #555;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.04); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
 
@@ -266,7 +306,7 @@
 
         .letter img {
             width: 100%;
-            max-height: 130px;
+            max-height: 160px;
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -296,28 +336,28 @@
 <body>
 
     <div class="card" id="wizard-card">
-        <!-- PASO 1 -->
+        <!-- PASO 1: TAMAÑO -->
         <div class="step-container active" id="step-1">
             <h1>Paso 1: Tamaño</h1>
             <p>Elige el tamaño del pastel</p>
             <div class="options-grid">
-                <button class="opt-btn" onclick="setTamano('Mini', 140, 90)">Mini Cupcake</button>
-                <button class="opt-btn" onclick="setTamano('Mediano', 170, 100)">Mediano</button>
-                <button class="opt-btn" onclick="setTamano('Grande', 200, 120)">Grande</button>
-                <button class="opt-btn" onclick="setTamano('Dos Pisos', 170, 140)">Dos Pisos</button>
+                <button class="opt-btn" onclick="setTamano(140, 90)">Mini Cupcake</button>
+                <button class="opt-btn" onclick="setTamano(170, 100)">Mediano</button>
+                <button class="opt-btn" onclick="setTamano(200, 120)">Grande</button>
+                <button class="opt-btn" onclick="setTamano(170, 140)">Dos Pisos</button>
             </div>
             <button class="btn" onclick="siguientePaso(2)">Siguiente ➡️</button>
         </div>
 
-        <!-- PASO 2 -->
+        <!-- PASO 2: BIZCOCHO -->
         <div class="step-container" id="step-2">
             <h1>Paso 2: Bizcocho</h1>
             <p>Selecciona el sabor base</p>
             <div class="options-grid">
-                <button class="opt-btn" onclick="setBizcocho('#ffc0cb', 'Fresa')">🍓 Fresa</button>
-                <button class="opt-btn" onclick="setBizcocho('#d4a373', 'Vainilla')">🌾 Vainilla</button>
-                <button class="opt-btn" onclick="setBizcocho('#582f0e', 'Chocolate')">🍫 Chocolate</button>
-                <button class="opt-btn" onclick="setBizcocho('#ffb703', 'Maracuyá')">🍊 Naranja</button>
+                <button class="opt-btn" onclick="setBizcocho('#ffc0cb')">🍓 Fresa</button>
+                <button class="opt-btn" onclick="setBizcocho('#d4a373')">🌾 Vainilla</button>
+                <button class="opt-btn" onclick="setBizcocho('#582f0e')">🍫 Chocolate</button>
+                <button class="opt-btn" onclick="setBizcocho('#ffb703')">🍊 Naranja</button>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-back" onclick="siguientePaso(1)">⬅️ Atrás</button>
@@ -325,7 +365,7 @@
             </div>
         </div>
 
-        <!-- PASO 3 -->
+        <!-- PASO 3: RELLENO -->
         <div class="step-container" id="step-3">
             <h1>Paso 3: Relleno</h1>
             <p>¿Qué rico relleno llevará dentro?</p>
@@ -341,12 +381,12 @@
             </div>
         </div>
 
-        <!-- PASO 4 -->
+        <!-- PASO 4: GLASEADO Y COLOR -->
         <div class="step-container" id="step-4">
             <h1>Paso 4: Glaseado</h1>
             <p>Elige el color de la cobertura</p>
             <div class="color-picker-box">
-                <label>Color:</label>
+                <label>Color del Glaseado:</label>
                 <input type="color" id="pickerGlaseado" value="#ffffff" onchange="setGlaseado(this.value)">
             </div>
             <div class="nav-buttons">
@@ -355,7 +395,7 @@
             </div>
         </div>
 
-        <!-- PASO 5: ESCOGER 2 DECORACIONES -->
+        <!-- PASO 5: 2 DECORACIONES -->
         <div class="step-container" id="step-5">
             <h1>Paso 5: Decoración</h1>
             <p>Escoge exactamente <strong>2 opciones</strong>:</p>
@@ -371,27 +411,41 @@
             </div>
         </div>
 
-        <!-- PASO 6 -->
+        <!-- PASO 6: TIPO, CANTIDAD Y COLOR DE VELAS -->
         <div class="step-container" id="step-6">
             <h1>Paso 6: Velas</h1>
-            <p>¿Cuántas velas tendrá el pastel?</p>
-            <div class="options-grid">
-                <button class="opt-btn" onclick="setVelas(1)">1 Vela</button>
-                <button class="opt-btn" onclick="setVelas(3)">3 Velas</button>
-                <button class="opt-btn" onclick="setVelas(5)">5 Velas</button>
-                <button class="opt-btn" onclick="setVelas(0)">Sin velas</button>
+            <p>Configura las velas del pastel</p>
+            
+            <p style="margin:5px 0; font-size:12px; color:#e0aaff;">Tipo de vela:</p>
+            <div class="options-grid" style="margin-bottom:10px;">
+                <button class="opt-btn active-choice" id="tipo-normal" onclick="setTipoVela('normal', this)">🕯️ Normales</button>
+                <button class="opt-btn" id="tipo-bengala" onclick="setTipoVela('bengala', this)">✨ Bengala / Chispa</button>
             </div>
+
+            <p style="margin:5px 0; font-size:12px; color:#e0aaff;">Cantidad:</p>
+            <div class="options-grid" style="margin-bottom:10px;">
+                <button class="opt-btn" onclick="setCantidadVelas(1)">1 Vela</button>
+                <button class="opt-btn active-choice" onclick="setCantidadVelas(3)">3 Velas</button>
+                <button class="opt-btn" onclick="setCantidadVelas(4)">4 Velas</button>
+                <button class="opt-btn" onclick="setCantidadVelas(5)">5 Velas</button>
+            </div>
+
+            <div class="color-picker-box" style="margin:5px 0;">
+                <label style="font-size:12px;">Color de las Velas:</label>
+                <input type="color" id="pickerVelas" value="#ff70a6" onchange="setColorVelas(this.value)">
+            </div>
+
             <div class="nav-buttons">
                 <button class="btn btn-back" onclick="siguientePaso(5)">⬅️ Atrás</button>
-                <button class="btn" onclick="generarPastelFinal()">Ver mi Pastel! 🎂</button>
+                <button class="btn" onclick="generarPastelFinal()">¡Ver mi Pastel! 🎂</button>
             </div>
         </div>
     </div>
 
-    <!-- PANTALLA DEL PASTEL FINAL (LISTO PARA APAGAR VELAS) -->
+    <!-- PANTALLA FINAL DEL PASTEL -->
     <div class="card" id="final-screen">
-        <h1>¡Tu pastel quedó hermoso! 🎂💜</h1>
-        <p id="instruccion-velas">Toca las velas para soplarlas y apagarlas</p>
+        <h1>¡Toca cada velita para apagarla! 🎂✨</h1>
+        <p id="instruccion-velas">Faltan velas por apagar</p>
         
         <div class="cake-display">
             <div class="cake-body" id="finalCakeBody">
@@ -400,23 +454,23 @@
                 <div class="toppings-box" id="finalToppingsBox"></div>
             </div>
         </div>
-
-        <button class="btn" id="btnApagar" onclick="apagarVelas()" style="margin-top:10px;">💨 Soplar y Apagar Velas</button>
-        <button class="btn" id="btnVerCarta" onclick="mostrarSobre()" style="display:none; margin-top:10px; background:#e0aaff; color:#2c163a;">💌 Abrir Carta Sorpresa</button>
     </div>
 
-    <!-- MODAL DE SOBRE Y CARTA -->
+    <!-- MODAL DE SOBRE BLANCO CON CORAZÓN ROJO Y CARTA -->
     <div id="modal-container">
-        <div class="envelope" id="envelope" onclick="abrirCartaReal()">
-            <h3 style="color:#fff; margin:0;">Open Me / Ábreme 💌</h3>
-            <p style="color:#e0aaff; font-size:13px; margin:5px 0 0 0;">Toca para leer tu carta</p>
+        <!-- Sobre Blanco con Corazón Rojo -->
+        <div class="envelope-white" id="envelope" onclick="abrirCartaReal()">
+            <div class="red-heart">❤️</div>
+            <p>Ábreme</p>
         </div>
 
+        <!-- La Carta -->
         <div class="letter" id="letterContent">
-            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Foto">
+            <!-- 💡 AQUÍ PUEDES CAMBIAR EL ENLACE DE LA FOTO POR EL TUYO -->
+            <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Nuestra foto">
             <h2>Para el amor de mi vida 💜</h2>
-            <p>Mi amor, diseñaste el pastel perfecto tal cual te amo. Cada detalle a tu lado es mágico, adoro tu color favorito y todo lo que compartimos.</p>
-            <p>Gracias por iluminar mis días como estas velas. ¡Te amo con todo mi corazón! ✨</p>
+            <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. Gracias por ser mi persona favorita y llenar mi vida de luz.</p>
+            <p>¡Te amo con todo mi corazón! ✨</p>
             <div class="firma">Con todo mi amor, tu novio.</div>
         </div>
     </div>
@@ -428,15 +482,19 @@
             bizcochoColor: '#ffc0cb',
             glaseadoColor: '#ffffff',
             decoraciones: [],
-            velas: 3
+            tipoVela: 'normal',
+            velasCantidad: 3,
+            velasColor: '#ff70a6'
         };
+
+        let velasApagadas = 0;
 
         function siguientePaso(paso) {
             document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
             document.getElementById('step-' + paso).classList.add('active');
         }
 
-        function setTamano(nombre, w, h) {
+        function setTamano(w, h) {
             pastelData.w = w;
             pastelData.h = h;
         }
@@ -476,8 +534,19 @@
             siguientePaso(6);
         }
 
-        function setVelas(num) {
-            pastelData.velas = num;
+        function setTipoVela(tipo, btn) {
+            pastelData.tipoVela = tipo;
+            document.getElementById('tipo-normal').classList.remove('active-choice');
+            document.getElementById('tipo-bengala').classList.remove('active-choice');
+            btn.classList.add('active-choice');
+        }
+
+        function setCantidadVelas(num) {
+            pastelData.velasCantidad = num;
+        }
+
+        function setColorVelas(color) {
+            pastelData.velasColor = color;
         }
 
         function generarPastelFinal() {
@@ -485,7 +554,6 @@
             const finalScreen = document.getElementById('final-screen');
             finalScreen.style.display = 'flex';
 
-            // Aplicar estilos guardados al pastel visual
             const body = document.getElementById('finalCakeBody');
             body.style.width = pastelData.w + 'px';
             body.style.height = pastelData.h + 'px';
@@ -494,45 +562,29 @@
             const frosting = document.getElementById('finalCakeFrosting');
             frosting.style.background = pastelData.glaseadoColor;
 
-            // Poner las velas elegidas
             const candlesBox = document.getElementById('finalCandlesBox');
             candlesBox.innerHTML = '';
-            for (let i = 0; i < pastelData.velas; i++) {
+            velasApagadas = 0;
+
+            for (let i = 0; i < pastelData.velasCantidad; i++) {
                 const candle = document.createElement('div');
-                candle.className = 'candle';
-                candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
-                candlesBox.appendChild(candle);
-            }
-
-            // Poner las 2 decoraciones elegidas sobre el pastel
-            const toppingsBox = document.getElementById('finalToppingsBox');
-            toppingsBox.innerHTML = `<span>${pastelData.decoraciones[0]}</span><span>${pastelData.decoraciones[1]}</span>`;
-            
-            if(pastelData.velas === 0) {
-                document.getElementById('btnApagar').style.display = 'none';
-                document.getElementById('btnVerCarta').style.display = 'block';
-                document.getElementById('instruccion-velas').innerText = "¡Listo tu pastel sin velas!";
-            }
-        }
-
-        function apagarVelas() {
-            for (let i = 0; i < pastelData.velas; i++) {
-                const flame = document.getElementById('flame-' + i);
-                if(flame) flame.classList.add('off');
-            }
-            document.getElementById('instruccion-velas').innerText = "¡Velas apagadas con éxito! 🎉";
-            document.getElementById('btnApagar').style.display = 'none';
-            document.getElementById('btnVerCarta').style.display = 'block';
-        }
-
-        function mostrarSobre() {
-            document.getElementById('modal-container').style.display = 'flex';
-        }
-
-        function abrirCartaReal() {
-            document.getElementById('envelope').style.display = 'none';
-            document.getElementById('letterContent').style.display = 'block';
-        }
-    </script>
-</body>
-</html>
+                
+                if (pastelData.tipoVela === 'bengala') {
+                    candle.className = 'candle bengala';
+                    candle.innerHTML = '<div class="flame bengala-flame" id="flame-'+i+'"></div>';
+                } else {
+                    candle.className = 'candle normal';
+                    candle.style.background = pastelData.velasColor;
+                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
+                }
+                
+                // Apagar velita por velita al tocarla
+                candle.onclick = function() {
+                    const flame = document.getElementById('flame-' + i);
+                    if (!flame.classList.contains('off')) {
+                        flame.classList.add('off');
+                        velasApagadas++;
+                        
+                        if (velasApagadas === pastelData.velasCantidad) {
+                            setTimeout(lanzarConfetiYMostrarSobre, 500);
+         
