@@ -64,7 +64,8 @@
         .cake-body {
             width: 170px; height: 100px; border-radius: 12px 12px 0 0;
             position: relative; box-shadow: inset 0 -12px 0 rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease, clip-path 0.2s ease;
+            cursor: pointer;
         }
         .cake-frosting { position: absolute; top: 0; width: 100%; height: 30px; border-radius: 12px 12px 0 0; }
         .candles-box { position: absolute; top: -45px; width: 100%; display: flex; justify-content: center; gap: 12px; }
@@ -222,16 +223,17 @@
 
     <!-- PANTALLA FINAL DEL PASTEL -->
     <div class="card" id="final-screen">
-        <h1>¡Toca cada velita para apagarla! 🎂✨</h1>
-        <p id="instruccion-velas">Faltan velas por apagar</p>
+        <h1>¡Apaga las velas y come el pastel! 🎂🍰</h1>
+        <p id="instruccion-velas">Toca las velas para apagarlas</p>
         <div class="cake-display">
-            <div class="cake-body" id="finalCakeBody">
+            <!-- AL TOCAR EL PASTEL YA APAGADO, SE COME DE A POQUITOS -->
+            <div class="cake-body" id="finalCakeBody" onclick="darMordisco()">
                 <div class="cake-frosting" id="finalCakeFrosting"></div>
                 <div class="candles-box" id="finalCandlesBox"></div>
                 <div class="toppings-box" id="finalToppingsBox"></div>
             </div>
         </div>
-        <button class="btn" id="comerBtn" style="display:none; margin-top: 15px;" onclick="comerPastel()">😋 ¡Comer Pastel!</button>
+        <p id="mordiscos-txt" style="font-size: 11px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
     </div>
 
     <!-- PANTALLA DE PIÑATA -->
@@ -265,6 +267,8 @@
             tipoVela: 'normal', cantVelas: '3', colorVelas: '#ff70a6'
         };
         let velasApagadas = 0;
+        let totalVelas = 0;
+        let mordiscos = 0;
         let golpesPiñata = 0;
 
         function irPaso(num) {
@@ -316,8 +320,9 @@
             let candlesBox = document.getElementById('finalCandlesBox');
             candlesBox.innerHTML = '';
             velasApagadas = 0;
+            mordiscos = 0;
 
-            let totalVelas = parseInt(pastelData.cantVelas);
+            totalVelas = parseInt(pastelData.cantVelas);
             for (let i = 0; i < totalVelas; i++) {
                 let candle = document.createElement('div');
                 if (pastelData.tipoVela === 'bengala') {
@@ -326,25 +331,26 @@
                 } else {
                     candle.className = 'candle normal';
                     candle.style.background = pastelData.colorVelas;
-                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
+                    candle.innerHTML = '<svg class="flame" id="flame-'+i+'" viewBox="0 0 12 16"><path d="M6 0 C2 5, 0 8, 0 11 C0 14, 3 16, 6 16 C9 16, 12 14, 12 11 C12 8, 10 5, 6 0 Z" fill="#ffd166"/></svg>';
                 }
                 
-                candle.onclick = function() {
+                // Evitamos que al tocar la vela se active también el mordisco del pastel
+                candle.onclick = function(e) {
+                    e.stopPropagation();
                     let flame = document.getElementById('flame-' + i);
                     if (!flame.classList.contains('off')) {
                         flame.classList.add('off');
                         velasApagadas++;
                         if (velasApagadas === totalVelas) {
-                            document.getElementById('instruccion-velas').innerText = "¡Todas las velas apagadas! 🎉";
-                            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-                            document.getElementById('comerBtn').style.display = 'inline-block';
+                            document.getElementById('instruccion-velas').innerText = "¡Velas apagadas! 🎂 Toca el pastel para comerlo.";
+                            document.getElementById('mordiscos-txt').style.display = 'block';
+                            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
                         }
                     }
                 };
                 candlesBox.appendChild(candle);
             }
 
-            // Rellenar varias veces los elementos de decoración seleccionados para que no salga solo uno
             let d1 = pastelData.decoraciones[0];
             let d2 = pastelData.decoraciones[1];
             let acumuladoStr = `${d1} ${d2} ${d1} ${d2} ${d1}`;
@@ -352,14 +358,28 @@
             toppingsBox.innerHTML = `<span>${acumuladoStr}</span>`;
         }
 
-        function comerPastel() {
+        function darMordisco() {
+            if (velasApagadas < totalVelas) {
+                alert("¡Primero debes apagar todas las velas soplando/tocándolas! 🕯️");
+                return;
+            }
+
+            mordiscos++;
             let body = document.getElementById('finalCakeBody');
-            body.style.transform = 'scale(0.2)';
-            body.style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('final-screen').style.display = 'none';
-                document.getElementById('piñata-screen').style.display = 'flex';
-            }, 600);
+            
+            // Efecto visual de reducirse de tamaño por cada mordisco
+            let escala = 1 - (mordiscos * 0.2);
+            body.style.transform = `scale(${escala})`;
+
+            document.getElementById('mordiscos-txt').innerText = `¡Comiendo pastel! (${mordiscos} / 4)`;
+
+            if (mordiscos >= 4) {
+                body.style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('final-screen').style.display = 'none';
+                    document.getElementById('piñata-screen').style.display = 'flex';
+                }, 400);
+            }
         }
 
         function golpearPiñata() {
