@@ -10,7 +10,7 @@
         body {
             margin: 0;
             padding: 0;
-            background: #2c163a; /* Fondo morado favorito */
+            background: #2c163a;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
@@ -182,11 +182,6 @@
             cursor: pointer;
         }
 
-        /* Estilo para vela normal o bengala */
-        .candle.normal {
-            /* Color asignado por JS */
-        }
-
         .candle.bengala {
             background: repeating-linear-gradient(45deg, #fff, #fff 4px, #333 4px, #333 8px) !important;
             border: 1px solid #ffd166;
@@ -206,7 +201,7 @@
         }
 
         .flame.bengala-flame {
-            background: #00ffff; /* Chispa brillante estilo bengala */
+            background: #00ffff;
             box-shadow: 0 0 12px #00ffff, 0 0 20px #fff;
             width: 14px;
             height: 18px;
@@ -466,7 +461,6 @@
 
         <!-- La Carta -->
         <div class="letter" id="letterContent">
-            <!-- 💡 AQUÍ PUEDES CAMBIAR EL ENLACE DE LA FOTO POR EL TUYO -->
             <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Nuestra foto">
             <h2>Para el amor de mi vida 💜</h2>
             <p>Mi amor, armé este detalle paso a paso pensando en ti. Cada momento a tu lado es tan especial y dulce. Gracias por ser mi persona favorita y llenar mi vida de luz.</p>
@@ -578,7 +572,6 @@
                     candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
                 }
                 
-                // Apagar velita por velita al tocarla
                 candle.onclick = function() {
                     const flame = document.getElementById('flame-' + i);
                     if (!flame.classList.contains('off')) {
@@ -587,4 +580,12 @@
                         
                         if (velasApagadas === pastelData.velasCantidad) {
                             setTimeout(lanzarConfetiYMostrarSobre, 500);
-         
+                        }
+                    }
+                };
+                
+                candlesBox.appendChild(candle);
+            }
+
+            const toppingsBox = document.getElementById('finalToppingsBox');
+            toppingsBox.innerHTML = `<span>${pastelData.decoraciones[0]}</span><span>${pastelData.decoracio
