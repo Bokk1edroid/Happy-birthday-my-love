@@ -226,7 +226,7 @@
                 <div class="toppings-box" id="finalToppingsBox"></div>
             </div>
         </div>
-        <p id="mordiscos-txt" style="font-size: 12px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
+        <p id="mordiscos-text" style="font-size: 12px; color: #e0aaff; margin-top: 5px; display:none;">¡Toca el pastel para comerlo! (0 / 4)</p>
     </div>
 
     <div class="card" id="piñata-screen">
@@ -329,41 +329,43 @@
             body.style.transform = 'scale(1)';
             body.style.opacity = '1';
 
-            totalVelas = parseInt(pastelData.cantVelas);
+            totalVelas = parseInt(pastelData.cantVelas) || 3;
+
             for (let i = 0; i < totalVelas; i++) {
                 let candle = document.createElement('div');
                 if (pastelData.tipoVela === 'bengala') {
                     candle.className = 'candle bengala';
-                    candle.innerHTML = '<div class="flame bengala-flame" id="flame-'+i+'"></div>';
+                    candle.innerHTML = `<div class="flame bengala-flame" id="flame-${i}"></div>`;
                 } else {
                     candle.className = 'candle normal';
                     candle.style.background = pastelData.colorVelas;
-                    candle.innerHTML = '<div class="flame" id="flame-'+i+'"></div>';
+                    candle.innerHTML = `<div class="flame" id="flame-${i}"></div>`;
                 }
                 
                 candle.onclick = function(e) {
                     e.stopPropagation();
                     iniciarMusica();
-                    let flame = document.getElementById('flame-' + i);
-                    if (!flame.classList.contains('off')) {
+                    let flame = candle.querySelector('.flame');
+                    if (flame && !flame.classList.contains('off')) {
                         flame.classList.add('off');
                         candle.style.opacity = '0.4';
                         velasApagadas++;
                         if (velasApagadas === totalVelas) {
                             document.getElementById('instruccion-velas').innerText = "¡Velas apagadas! 🎂 ¡Toca el pastel para comerlo!";
-                            document.getElementById('mordiscos-txt').style.display = 'block';
-                            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+                            document.getElementById('mordiscos-text').style.display = 'block';
+                            if (typeof confetti === 'function') {
+                                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+                            }
                         }
                     }
                 };
                 candlesBox.appendChild(candle);
             }
 
-            let d1 = pastelData.decoraciones[0];
-            let d2 = pastelData.decoraciones[1];
-            let acumuladoStr = `${d1} ${d2} ${d1} ${d2} ${d1}`;
+            let d1 = pastelData.decoraciones[0] || '';
+            let d2 = pastelData.decoraciones[1] || '';
             let toppingsBox = document.getElementById('finalToppingsBox');
-            toppingsBox.innerHTML = `<span>${acumuladoStr}</span>`;
+            toppingsBox.innerHTML = `<span>${d1} ${d2} ${d1} ${d2}</span>`;
         }
 
         function darMordisco() {
@@ -378,7 +380,7 @@
             let escala = 1 - (mordiscos * 0.22);
             body.style.transform = `scale(${escala})`;
 
-            document.getElementById('mordiscos-txt').innerText = `¡Comiendo pastel! (${mordiscos} / 4)`;
+            document.getElementById('mordiscos-text').innerText = `¡Comiendo pastel! (${mordiscos} / 4)`;
 
             if (mordiscos >= 4) {
                 body.style.opacity = '0';
@@ -400,7 +402,9 @@
 
             if (golpesPiñata >= 5) {
                 piñataEl.innerText = "💥🪅✨";
-                confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 200, spread: 100, origin: { y: 0.5 } });
+                }
                 setTimeout(() => {
                     document.getElementById('piñata-screen').style.display = 'none';
                     document.getElementById('modal-container').style.display = 'flex';
